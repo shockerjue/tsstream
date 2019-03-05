@@ -10,6 +10,15 @@ import (
 	"github.com/gansidui/gotcp"
 )
 
+/*
+* 主要是用于作为一个分布式的TCP流接收服务，并将流通过分发器分发出去
+*/
+
+const (
+	PacketSendChanLimit 	= 32	// 传送包的chan大小
+	PacketReceiveChanLimit 	= 32	// 接收包的chan限制
+)
+
 type StreamPacket struct {
 	buf []byte
 }

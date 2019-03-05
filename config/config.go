@@ -95,36 +95,28 @@ func init() {
 	if err != nil {
 		log.Fatal("load app conf err:", err)
 	}
-
 	err = cfg.Section("app").MapTo(AppConf)
 	if err != nil {
 		log.Fatal("init app conf err:", err)
 	}
-
 	err = cfg.Section("backstream").MapTo(BackStreamConf)
 	if err != nil {
 		log.Fatal("init backstream conf err:", err)
 	}
-
 	err = cfg.Section("pushstream").MapTo(PushStreamConf)
 	if err != nil {
 		log.Fatal("init pushstream conf err:", err)
 	}
-
 	err = cfg.Section("dispatch").MapTo(DispatchConf)
 	if err != nil {
 		log.Fatal("init dispatch conf err:", err)
 	}
-
 	err = cfg.Section("authority").MapTo(AuthorityConf)
 	if err != nil {
 		log.Fatal("init authority conf err:", err)
 	}
-	
 	err = cfg.Section("custom").MapTo(CustomConf)
 	if err != nil {
 		log.Fatal("init custom conf err:", err)
 	}
-
-	return
 }

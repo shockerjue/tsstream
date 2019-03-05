@@ -9,6 +9,16 @@ import (
 	"github.com/gansidui/gotcp"
 )
 
+/*
+* 这个主要是作为一个终端节点，以创建用户连接的TCP服务
+* 同时也是其他节点推送流来的服务器
+*/
+
+const (
+	PacketSendChanLimit 	= 128	// 传送包的chan大小
+	PacketReceiveChanLimit 	= 128	// 接收包的chan限制
+)
+
 type StreamPacket struct {
 	buf []byte
 }

@@ -10,9 +10,9 @@ sudo iptables -I INPUT -p tcp --dport 55002 -j ACCEPT
 
 # while true
 # do
-    # ffmpeg -threads 2 -rtbufsize 16M -f video4linux2   -framerate 20 -video_size 1280x720  -i /dev/video0 -f mpegts -codec:v mpeg1video -s 640x480 -b:v 450k -bufsize 1300k -bufsize 2800k -maxrate 1500k -bf 0 -r 20 -muxdelay 0.001  http://192.168.0.114:50001/xfyx333_576188
-    ./ffmpeg -threads 2 -rtbufsize 16M -f video4linux2   -framerate 20 -video_size 640x480  -i /dev/video0 -f mpegts -codec:v mpeg1video -s 640x480 -b:v 450k -bufsize 1300k -bufsize 2800k -maxrate 1500k -bf 0 -r 20 -muxdelay 0.001  tcp://47.75.129.127:8088
-    # ./ffmpeg -threads 2 -rtbufsize 16M -f video4linux2   -framerate 20 -video_size 640x480  -i /dev/video0 -f mpegts -codec:v mpeg1video -s 640x480 -b:v 450k -bufsize 1300k -bufsize 2800k -maxrate 1500k -bf 0 -r 20 -muxdelay 0.001  udp://192.168.0.114:50001
+    # ffmpeg -threads 2 -rtbufsize 16M -f video4linux2   -framerate 20 -video_size 1280x720  -i /dev/video0 -f mpegts -codec:v mpeg1video -s 640x480 -b:v 450k -bufsize 1300k -bufsize 2800k -maxrate 1500k -bf 0 -r 20 -muxdelay 0.001  http://
+    ./ffmpeg -threads 2 -rtbufsize 16M -f video4linux2   -framerate 20 -video_size 640x480  -i /dev/video0 -f mpegts -codec:v mpeg1video -s 640x480 -b:v 256k -bufsize 1300k -bufsize 2800k -maxrate 1500k -bf 0 -r 20 -muxdelay 0.001  tcp://
+    # ./ffmpeg -threads 2 -rtbufsize 16M -f video4linux2   -framerate 20 -video_size 640x480  -i /dev/video0 -f mpegts -codec:v mpeg1video -s 640x480 -b:v 450k -bufsize 1300k -bufsize 2800k -maxrate 1500k -bf 0 -r 20 -muxdelay 0.001  udp://
     ping -c 3 127.0.0.1 > /dev/null
 # done
 

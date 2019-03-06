@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>JSMpeg Stream Client</title>
+	<style type="text/css">
+		html, body {
+			background-color: #111;
+			text-align: center;
+		}
+	</style>
+	
+</head>
+<body>
+	<canvas id="video-canvas" style="width:40%;height: 40%;"></canvas>
+	<canvas id="video-canvas1" style="width: 40%;height: 540%;"></canvas>
+	<canvas id="video-canvas2" style="width: 40%;height: 40%;"></canvas>
+	<canvas id="video-canvas3" style="width: 40%;height: 40%;"></canvas>
+
+	<!--
+		引入播放脚本，这样就可以直接播放视频脚本了
+	-->
+	<script type="text/javascript" src="jsmpeg.min.js"></script>
+	<script type="text/javascript">
+		var canvas = document.getElementById('video-canvas');
+		var canvas1 = document.getElementById('video-canvas1');
+		var canvas2 = document.getElementById('video-canvas2');
+		var canvas3 = document.getElementById('video-canvas3');
+		var url = 'wss://l...'; // 播放地址//
+		var player = new JSMpeg.Player(url,{canvas: canvas});
+		var player1 = new JSMpeg.Player(url,{canvas: canvas1});
+		var player2 = new JSMpeg.Player(url,{canvas: canvas2});
+		var player3 = new JSMpeg.Player(url,{canvas: canvas3});
+	</script>
+</body>
+</html>

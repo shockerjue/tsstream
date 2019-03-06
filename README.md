@@ -1,11 +1,18 @@
-# 
-![架构图](https://github.com/shockerjue/tsstream/blob/master/streamupdate.png)
+### 架构图
+![架构图](https://github.com/shockerjue/tsstream/blob/master/img/bushu1.png)
+![架构图](https://github.com/shockerjue/tsstream/blob/master/img/bushu2.png)
+![架构图](https://github.com/shockerjue/tsstream/blob/master/img/bushu3.png)
+![架构图](https://github.com/shockerjue/tsstream/blob/master/img/bushu4.png)
+![架构图](https://github.com/shockerjue/tsstream/blob/master/img/bushu5.png)
+
+### 将端口打开
 sudo iptables -I INPUT -p tcp --dport 50001 -j ACCEPT &&
 sudo iptables -I INPUT -p udp --dport 50001 -j ACCEPT &&
 sudo iptables -I INPUT -p tcp --dport 50002 -j ACCEPT &&
 sudo iptables -I INPUT -p tcp --dport 8088 -j ACCEPT &&
 sudo iptables -I INPUT -p tcp --dport 55002 -j ACCEPT 
 
+### 推送视频脚本
 #!/bin/bash
 
 # while true
@@ -18,6 +25,8 @@ sudo iptables -I INPUT -p tcp --dport 55002 -j ACCEPT
 
 exit
 
+#### 推送视频参数设置
+```
 # -rtbufsize        设置最大的real-time帧内存使用，也就是视频流缓冲。等待发送的视频信息
 # -threads          设置编码的线程数
 # -framerate        设置输入输出的帧数 
@@ -30,3 +39,5 @@ exit
 # -maxrate          设置最大的输出比特率
 # -r                设定帧速率
 # -muxdelay         设置最大的解码延迟
+```
+

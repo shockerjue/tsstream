@@ -1,5 +1,5 @@
 # 
-
+![架构图](https://github.com/shockerjue/tsstream/blob/master/streamupdate.png)
 sudo iptables -I INPUT -p tcp --dport 50001 -j ACCEPT &&
 sudo iptables -I INPUT -p udp --dport 50001 -j ACCEPT &&
 sudo iptables -I INPUT -p tcp --dport 50002 -j ACCEPT &&

@@ -3,6 +3,7 @@
 ![ffmpeg推流到单节点，节点内部扩展](https://github.com/shockerjue/tsstream/blob/master/img/demo.png)
 上图是一个单节点部署架构。
 
+## 服务器部署
 ### normal配置
 ```
 # app 的配置
@@ -17,7 +18,7 @@ Protocol = TCP
 Bind = 0.0.0.0
 Port = 50001
 # 接受流的秘钥或者密码
-Secret = xfyx333_576188
+Secret = key_576588
 
 # 主要用于识别创建接收通过UDP/TCP推送过来的数据的服务类型以及接收流服务信息[extra]
 [pushstream]
@@ -72,7 +73,7 @@ Protocol = TCP
 Bind = 0.0.0.0
 Port = 50001
 # 接受流的秘钥或者密码
-Secret = xfyx_576188
+Secret = key_576588
 
 # 主要用于识别创建接收通过UDP/TCP推送过来的数据的服务类型以及接收流服务信息[extra]
 [pushstream]
@@ -124,7 +125,7 @@ Protocol = TCP
 Bind = 0.0.0.0
 Port = 50001
 # 接受流的秘钥或者密码
-Secret = xfyx_576188
+Secret = key_
 
 # 主要用于识别创建接收通过UDP/TCP推送过来的数据的服务类型以及接收流服务信息[extra]
 [pushstream]
@@ -161,3 +162,23 @@ Bind = 0.0.0.0
 Port = 56002
 
 ```
+
+
+## 客户端部署
+客户端主要是通过网页的形式进行部署，部署之后通过浏览器进行访问。在部署之后修改播放地址为部署的服务器的地址。
+```
+<script type="text/javascript" src="jsmpeg.min.js"></script>
+<script type="text/javascript">
+    var canvas = document.getElementById('video-canvas');
+    var canvas1 = document.getElementById('video-canvas1');
+    var canvas2 = document.getElementById('video-canvas2');
+    var canvas3 = document.getElementById('video-canvas3');
+    var url = 'wss://l...'; // 播放地址//
+    var player = new JSMpeg.Player(url,{canvas: canvas});
+    var player1 = new JSMpeg.Player(url,{canvas: canvas1});
+    var player2 = new JSMpeg.Player(url,{canvas: canvas2});
+    var player3 = new JSMpeg.Player(url,{canvas: canvas3});
+</script>
+```
+
+播放主要是引入jsmpeg.min.js文件，使用其中的JSMpeg.Player进行播放。

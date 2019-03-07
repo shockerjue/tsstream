@@ -166,18 +166,13 @@ Port = 56002
 
 ## 客户端部署
 客户端主要是通过网页的形式进行部署，部署之后通过浏览器进行访问。在部署之后修改播放地址为部署的服务器的地址。
+
 ```
 <script type="text/javascript" src="jsmpeg.min.js"></script>
 <script type="text/javascript">
     var canvas = document.getElementById('video-canvas');
-    var canvas1 = document.getElementById('video-canvas1');
-    var canvas2 = document.getElementById('video-canvas2');
-    var canvas3 = document.getElementById('video-canvas3');
-    var url = 'wss://l...'; // 播放地址//
+    var url = 'wss://....'; // 播放地址//
     var player = new JSMpeg.Player(url,{canvas: canvas});
-    var player1 = new JSMpeg.Player(url,{canvas: canvas1});
-    var player2 = new JSMpeg.Player(url,{canvas: canvas2});
-    var player3 = new JSMpeg.Player(url,{canvas: canvas3});
 </script>
 ```
 

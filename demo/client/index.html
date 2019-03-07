@@ -7,12 +7,22 @@
 			background-color: #111;
 			text-align: center;
 		}
+
+		input {
+			height: 100%;
+			width: 64px;
+		}
 	</style>
 	
 </head>
 <body>
+	<div style="height: 48px;width: 100%;">
+		<input type="button" onclick="onSwitch1Video();" value="1 Video" name="1 Video"/>
+		<input type="button" onclick="onSwitch2Video();" value="2 Video" name="2 Video"/>
+		<input type="button" onclick="onSwitch4Video();" value="4 Video" name="4 Video"/>
+	</div>
 	<canvas id="video-canvas" style="width:40%;height: 40%;"></canvas>
-	<canvas id="video-canvas1" style="width: 40%;height: 540%;"></canvas>
+	<canvas id="video-canvas1" style="width: 40%;height: 40%;"></canvas>
 	<canvas id="video-canvas2" style="width: 40%;height: 40%;"></canvas>
 	<canvas id="video-canvas3" style="width: 40%;height: 40%;"></canvas>
 
@@ -25,11 +35,64 @@
 		var canvas1 = document.getElementById('video-canvas1');
 		var canvas2 = document.getElementById('video-canvas2');
 		var canvas3 = document.getElementById('video-canvas3');
-		var url = 'wss://l...'; // 播放地址//
+		var url = 'ws://...'; // 播放地址//
 		var player = new JSMpeg.Player(url,{canvas: canvas});
 		var player1 = new JSMpeg.Player(url,{canvas: canvas1});
 		var player2 = new JSMpeg.Player(url,{canvas: canvas2});
 		var player3 = new JSMpeg.Player(url,{canvas: canvas3});
+
+		function onSwitch1Video() {
+			if(!canvas1.hidden) {
+				canvas1.hidden = true;
+				player1.stop();
+			}
+
+			if(!canvas2.hidden) {
+				canvas2.hidden = true;
+				player2.stop();
+			}
+
+			if(!canvas3.hidden) {
+				canvas3.hidden = true;
+				player3.stop();
+			}
+		}
+
+		function onSwitch2Video() {
+			if(canvas1.hidden) {
+				canvas1.hidden = false;
+				player1.play();
+			}
+
+			if(!canvas2.hidden) {
+				canvas2.hidden = true;
+				player2.stop();
+			}
+
+			if(!canvas3.hidden) {
+				canvas3.hidden = true;
+				player3.stop();
+			}
+		}
+
+		function onSwitch4Video() {
+			if(canvas1.hidden) {
+				canvas1.hidden = false;
+				player1.play();
+			}
+
+			if(canvas2.hidden) {
+				canvas2.hidden = false;
+				player2.play();
+			}
+
+			if(canvas3.hidden) {
+				canvas3.hidden = false;
+				player3.play();
+			}
+		}
+
+		onSwitch1Video();
 	</script>
 </body>
 </html>

@@ -1,16 +1,26 @@
+
 <!DOCTYPE html>
 <html>
 <head>
+	<meta http-equiv=Content-Type content="text/html;charset=utf-8">
 	<title>JSMpeg Stream Client</title>
 	<style type="text/css">
 		html, body {
 			background-color: #111;
 			text-align: center;
 		}
+
+		input {
+			height: 32px;
+			width: 64px;
+		}
 	</style>
 	
 </head>
 <body>
+	<div style="height: 36px;width: 100%;">
+		<input id="full_button" type="button" onclick="onFillScreen();" value="全屏" name="4 Video"/>
+	</div>
 	<canvas id="video-canvas" style="width:40%;height: 40%;"></canvas>
 
 	<!--
@@ -21,6 +31,26 @@
 		var canvas = document.getElementById('video-canvas');
 		var url = 'ws://wstsstream.0letter.com'; // 播放地址//
 		var player = new JSMpeg.Player(url,{canvas: canvas});
+
+		var isFillScreen = false;
+		function onFillScreen() {
+			var screenW = window.screen.availWidth - 50;
+			var screenH = window.screen.availHeight - 150;
+			var canvas = document.getElementById('video-canvas');
+			var btn = document.getElementById('full_button');
+
+			if(isFillScreen) {
+				isFillScreen = false;
+				btn.value = "全屏";
+				canvas.style.cssText = "width:40%;height: 40%;";
+				
+				return ;
+			}
+
+			btn.value = "退出全屏";
+			canvas.style.cssText = "width:" +screenW+ "px;height: " + screenH + "px;";
+			isFillScreen = true;
+		}
 	</script>
 </body>
 </html>

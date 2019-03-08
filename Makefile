@@ -1,4 +1,4 @@
-default: build install
+default: build
 
 build:
 	go build -x -o a.out main.go
@@ -27,6 +27,10 @@ install:
 	cp bin/a.out demo/server/extra1/bin/extra1
 	cp bin/a.out demo/server/extra2/bin/extra2
 
+	cp -rf demo/server /opt/
+	cp -rf demo/client /opt/
+	cp -rf demo/push /opt/
+	
 uninstall:
 	rm demo/server/normal/bin/normal
 	rm demo/server/extra1/bin/extra1

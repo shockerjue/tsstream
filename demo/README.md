@@ -177,3 +177,11 @@ Port = 56002
 ```
 
 播放主要是引入jsmpeg.min.js文件，使用其中的JSMpeg.Player进行播放。
+
+
+## 推送视频流数据
+推送视频流时间使用ffmpeg自带的功能直接进推送。根据需要修改推送脚本，其中主要的是修改推送协议和地址。
+```
+-f mpegts -codec:v mpeg1video -s 640x360 -b:v 450k -bufsize 1300k -bufsize 2800k -maxrate 1500k -bf 0 -r 20 -muxdelay 0.001  tcp://x.x.x.x:50001
+```
+主要修改上面信息中的tcp://x.x.x.x，可以修改为http地址或者是udp地址,配置的信息就是normal配置的接收流的地址信息.

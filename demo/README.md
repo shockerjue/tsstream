@@ -163,6 +163,28 @@ Port = 56002
 
 ```
 
+### 部署服务
+将框架拷贝到需要部署的目录下，然后执行run.sh脚本，以允许对应的服务。
+允许脚本以后，服务就启动完成，这个时候还需要配置具体的客户端访问服务，需要使用nginx代理来部署客户端访问具体的服务。
+```
+    upstream wstsstream {
+        server 127.0.0.1:56001;
+        server 127.0.0.1:56002;
+    }
+
+    server {
+        listen 80;
+        server_name  domain;
+
+
+        location / {
+                proxy_pass  http://wstsstream;
+                proxy_http_version 1.1;
+                proxy_set_header Upgrade $http_upgrade;
+                proxy_set_header Connection $connection_upgrade;
+        }
+    }
+```
 
 ## 客户端部署
 客户端主要是通过网页的形式进行部署，部署之后通过浏览器进行访问。在部署之后修改播放地址为部署的服务器的地址。
@@ -177,6 +199,29 @@ Port = 56002
 ```
 
 播放主要是引入jsmpeg.min.js文件，使用其中的JSMpeg.Player进行播放。
+
+##### 部署
+```
+server {
+    listen 80;
+    root rootdir; # 客户端根目录
+
+    index index.html index.htm index.nginx-debian.html index.php;
+
+    server_name domain; # 部署的域名
+
+    location / {
+            try_files $uri $uri/ =404;
+    }
+
+    location ~ .*\.(js|css)?$ {
+            add_header      Cache-Control no-cache;
+            add_header      Cache-Control private;
+            expires         0;
+    }
+}
+```
+部署主要采用的Nginx进行部署，其中通过浏览器直接进行访问。这样客户就可以直接使用浏览器进行访问具体的服务。
 
 
 ## 推送视频流数据

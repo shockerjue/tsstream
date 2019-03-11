@@ -65,65 +65,11 @@ exit
 ```
 
 
-### 配置说明
+### 测试说明
+本框架提供了具体的测试配置说明，测试目录在demo目录下
 ```
-# 配置模板文件
-# app 的配置
-[app]
-# 运行模式,normal(正常模式:用于接收ffmpeg流数据),extra(扩展方式:用于接收由UDP/TCP分发过来的流数据并将其分发出去)
-RunMode = 
-
-
-# 接收来自ffmpeg数据服务配置
-[backstream]
-# 启动接收流的服务类型(HTTP/UDP/TCP),默认值为HTTP
-Protocol = 
-
-# 接收流服务器的地址配置信息
-Bind = 0.0.0.0
-Port = 
-
-# 使用HTTP推流的时的秘钥或者密码
-Secret = 
-
-
-# 接收通过UDP/TCP推送数据的服务配置
-[pushstream]
-# 创建接收推送数据的服务类型（协议类型）[UDP/TCP]
-Protocol = 
-
-# 服务地址配置信息
-Bind = 0.0.0.0
-Port = 
-
-# 分发流配置信息，注是将流分发到CUSTOM，或者TCP/UDP服务中，是normal和extra共用的配置
-# Protocol设置为CUSTOM，则分发到当前进程的CUSTOM服务
-# 如果Protocol设置为TCP/UDP，则可以分发到其他进程，或者其他机器中
-[dispatch]
-# 分发使用的协议 UDP/TCP/CUSTOM(注：CUSTOM协议是分发到配置中custom配置中服务中,是直接与用户连接的服务中)
-Protocol = 
-
-# 分发的UDP和TCP的连接地址以及端口列表,只有protocol设置为UDP/TCP才会被使用
-# 如果Protocol设置为CUSTOM切custom中的Protocol设置为TCP，则下面应该保护custom中的地址信息
-Hosts = 
-Ports = 
-
-
-# 定义授权的ip地址列表,如果值为空，则可以接受任意IP的数据
-[authority]
-# 是否使用授权认证
-Use = 
-# 需要验证的IP地址列表
-Ips = 
-
-
-# 服务客户的配置信息，即直接服务器客户的配置
-[custom]
-# 分发协议类型(WEBSOCKET/TCP)
-Protocol = WEBSOCKET
-
-# 如果使用TCP需要过滤的IP地址，也就是推流过来的地址
-FilterIps = 127.0.0.1
-Bind = 0.0.0.0
-Port = 
+    client      这个目录是客户端文件，这个目录主要是通过web服务的方式使用
+    push        这个目录是用于推流的目录，里面包含了linux、mac、windows等平台的推流脚本
+    server      这个目录包含的是框架的部署方式以及部署程序
 ```
+具体的使用说明可以查看demo目录下的说明文件。

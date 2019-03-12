@@ -22,14 +22,22 @@ extra:
 
 	./bin/a.out
 
+moni:
+	cp conf/monitor.conf conf/app.conf
+	cp conf/monitor.conf bin/conf/app.conf
+
+	./bin/a.out
+
 install:
 	cp bin/a.out demo/server/normal/bin/normal
 	cp bin/a.out demo/server/extra1/bin/extra1
 	cp bin/a.out demo/server/extra2/bin/extra2
+	cp bin/a.out demo/monitor/bin/monitor
 
 	cp -rf demo/server /opt/
 	cp -rf demo/client /opt/
 	cp -rf demo/push /opt/
+	cp -rf demo/monitor /opt/
 	
 uninstall:
 	rm demo/server/normal/bin/normal

@@ -20,4 +20,3 @@ exit
 # -maxrate          设置最大的输出比特率
 # -r                设定帧速率
 # -muxdelay         设置最大的解码延迟
-

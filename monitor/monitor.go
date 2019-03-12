@@ -2,6 +2,8 @@ package monitor
 
 import (
 	"time"
+	"strings"
+	"io/ioutil"
 	"net/http"
 	"tsstream/config"
 	"github.com/gin-gonic/gin"
@@ -29,14 +31,19 @@ func (this *MonitorServer)RunServer() (err error) {
 	r.Use(gin.Logger())
 	r.Use(gin.Recovery())
 
-
 	authorized := r.Group("/")
 	authorized.Use(func(c *gin.Context) {	
 	})
 	{
+		/**
+		* 上传节点数据
+		*/
 		authorized.POST("/monitor",func(c *gin.Context) {
 			PostMonitorFunc(c)
 		})
+		/**
+		* 获取监控信息
+		*/
 		authorized.GET("/monitor",func(c *gin.Context){
 			GetMonitorFunc(c)
 		})
@@ -55,4 +62,50 @@ func (this *MonitorServer)RunServer() (err error) {
 	s.ListenAndServe()
 
 	return 
+}
+
+func SendPostRequestHttp(url string, param string) (response string,err error) {
+	postReq, err := http.NewRequest("POST",url,strings.NewReader(param))
+    if err != nil {
+        return 
+    }
+
+    postReq.Header.Set("Content-Type", "application/json;encoding=utf-8")
+
+    client := &http.Client{}
+    resp, err := client.Do(postReq)
+    if err != nil {
+        return 
+	} 
+	
+	body, err := ioutil.ReadAll(resp.Body) 
+	if err != nil {
+		return "",err
+	}
+
+	defer resp.Body.Close()
+
+	response = string(body)
+
+	return 
+}
+
+var monitorChan chan MonitorInfo = make(chan MonitorInfo,1)
+func RunMonitorTimer() {
+	for {
+		select {
+		case monitor := <- monitorChan:
+			data,err := monitor.Encode()
+			if nil != err {
+				return 
+			}
+
+			response, err := SendPostRequestHttp("",data)
+			if nil == err {
+				return 
+			}
+
+			log.Println(response)
+		}
+	}
 }

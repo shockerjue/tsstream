@@ -30,6 +30,7 @@ type MonitorInfo struct {
 
 func (this *MonitorInfo)Encode() (string,error) {
 	this.Hash()
+	
 	msgstr, err := json.Marshal(this)
 	if nil != err {
 		return "",err
@@ -43,6 +44,7 @@ func (this *MonitorInfo)Decode(data string) (err error) {
 	if nil == err {
 		return 
 	}
+
 	this.Hash()
 
 	return 

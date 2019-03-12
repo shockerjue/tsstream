@@ -7,6 +7,7 @@ import (
 	"syscall"
 	"tsstream/config"
 	"tsstream/controller"
+	"tsstream/monitor"
 	log "github.com/sirupsen/logrus"
 )
 
@@ -23,6 +24,11 @@ func main() {
 	if "extra" == config.AppConf.RunMode {
 		isRun = true
 		controller.RunExtra()
+	}
+
+	if "monitor" == config.AppConf.RunMode {
+		monitor := monitor.GetMonitorServer()
+		monitor.RunServer()
 	}
 
 	if isRun {

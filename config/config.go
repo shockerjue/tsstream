@@ -12,6 +12,7 @@ var (
 	DispatchConf = &DispatchConfig{}
 	AuthorityConf = &AuthorityConfig{}
 	CustomConf = &CustomConfig{}
+	MonitorConf = &MonitorConfig{}
 )
 
 /**
@@ -51,6 +52,11 @@ type PushStreamConfig struct {
 	Protocol		string 	//	接收流的协议
 	Bind 			string	//	绑定的地址
 	Port 			string	//	绑定的端口
+}
+
+type MonitorConfig struct {
+	Bind 			string 
+	Port 			string 
 }
 
 /**
@@ -118,5 +124,9 @@ func init() {
 	err = cfg.Section("custom").MapTo(CustomConf)
 	if err != nil {
 		log.Fatal("init custom conf err:", err)
+	}
+	err = cfg.Section("monitor").MapTo(MonitorConf)
+	if err != nil {
+		log.Fatal("init monitor conf err:", err)
 	}
 }

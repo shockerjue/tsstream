@@ -72,72 +72,16 @@
         var parent = json["data"]["genesis"];
         var data = {};
         data["name"] = parent["nodeinfo"]["name"];
-        data["children"] = [];
-        for(var j = 0; j < parent["nextnode"].length; ++j) {
-            var child = {
-                "name": parent["nextnode"][j]["name"],
-                symbolSize: 16,
-                label: {
-                    fontSize: 16,
-                    color: "#000" //字体颜色
-                },
-                itemStyle: {
-                    color: "#ff0000", //这是节点折叠时候的颜色
-                    borderColor: '#0000ff',
-                    borderWidth: 3,
-                    normal: {
-                        show: false,
-                        color: {
-                            type: 'radial',
-                            x: 0.5,
-                            y: 0.5,
-                            r: 0.5,
-                            colorStops: [{
-                                offset: 0,
-                                color: 'green' // 0% 处的颜色
-                            }, {
-                                offset: 1,
-                                color: 'white' // 100% 处的颜色
-                            }],
-                            globalCoord: false // 缺省为 false
-                        },
-                        borderColor: 'blue',
-                        borderWidth: 2,
-                        shadowColor: 'rgba(0, 0, 0, 1)',
-                        shadowBlur: 10
-                    },
-                    emphasis: {
-                        color: {
-                            type: 'radial',
-                            x: 0.5,
-                            y: 0.5,
-                            r: 0.5,
-                            colorStops: [{
-                                offset: 0,
-                                color: 'green' // 0% 处的颜色
-                            }, {
-                                offset: 1,
-                                color: 'white' // 100% 处的颜色
-                            }],
-                            globalCoord: false // 缺省为 false
-                        }
-                    }
-
-                },
-                lineStyle: {
-                    color: "#888",
-                    width: 4,
-                    type: 'solid' //'dotted'虚线 'solid'实线
-                },
-                "children": [{
-                        "name": "WEBSOCKET",
-                        "value":parent["nextnode"][j]["hash"],
-                    }
-                ]
-            };
-
-            data["children"].push(child);
+        if(0 < parent["nextnode"].lenght) {
+            data["children"] = [];
+            for(var j = 0; j < parent["nextnode"].length; ++j) {
+                var child = children(parent["nexrnode"][j]["hash"],json)
+                data["children"].push(child);
+            }
+        }else {
+            data["value"] = parent["nodeinfo"]["name"];
         }
+        
 
         var width = window.screen.availWidth - 50;
         var height = window.screen.availHeight - 150;
@@ -201,6 +145,80 @@
         });
     }
 
+    function children(hash,json){
+        var data = {};
+        var parent = json["data"][hash];
+        data["name"] = parent["nodeinfo"]["name"];
+        if(0 == parent["nextnode"].lenght){
+            data["value"] = parent["nodeinfo"]["name"];
+            
+            return;
+        }
+
+        data["children"] = [];
+        for(var j = 0; j < parent["nextnode"].length; ++j) {
+            var child = {
+                "name": parent["nextnode"][j]["name"],
+                symbolSize: 16,
+                label: {
+                    fontSize: 16,
+                    color: "#000" //字体颜色
+                },
+                itemStyle: {
+                    color: "#ff0000", //这是节点折叠时候的颜色
+                    borderColor: '#0000ff',
+                    borderWidth: 3,
+                    normal: {
+                        show: false,
+                        color: {
+                            type: 'radial',
+                            x: 0.5,
+                            y: 0.5,
+                            r: 0.5,
+                            colorStops: [{
+                                offset: 0,
+                                color: 'green' // 0% 处的颜色
+                            }, {
+                                offset: 1,
+                                color: 'white' // 100% 处的颜色
+                            }],
+                            globalCoord: false // 缺省为 false
+                        },
+                        borderColor: 'blue',
+                        borderWidth: 2,
+                        shadowColor: 'rgba(0, 0, 0, 1)',
+                        shadowBlur: 10
+                    },
+                    emphasis: {
+                        color: {
+                            type: 'radial',
+                            x: 0.5,
+                            y: 0.5,
+                            r: 0.5,
+                            colorStops: [{
+                                offset: 0,
+                                color: 'green' // 0% 处的颜色
+                            }, {
+                                offset: 1,
+                                color: 'white' // 100% 处的颜色
+                            }],
+                            globalCoord: false // 缺省为 false
+                        }
+                    }
+                },
+                lineStyle: {
+                    color: "#888",
+                    width: 4,
+                    type: 'solid' //'dotted'虚线 'solid'实线
+                }
+            };
+
+            child["children"] = children(parent["nextnode"][j]["hash"]);
+            data["children"].push(child);
+        }
+
+        return data;
+    }
 
     function OnInterval() {
         sendGetHttpRequest("http://api.monitor.0letter.com/monitor",OnRequestCallback,null);

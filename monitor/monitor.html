@@ -4,42 +4,6 @@
         <meta charset="utf-8">
         <title>Tsstream Monitor</title>
     </head>
-<style>
-
-    .link {
-        fill: #f00;
-        stroke: #666;
-        stroke-width: 1.5px;
-    }
-
-    #licensing {
-        fill: green;
-    }
-
-    .link.licensing {
-        stroke: green;
-    }
-
-    .link.resolved {
-        stroke-dasharray: 0,2 1;
-    }
-
-    circle {
-        fill: #ccc;
-        stroke: #333;
-        stroke-width: 1.5px;
-    }
-
-    text {
-        font: 12px Microsoft YaHei;
-        pointer-events: none;
-        text-shadow: 0 1px 0 #fff, 1px 0 0 #fff, 0 -1px 0 #fff, -1px 0 0 #fff;
-    }
-
-    .linetext {
-        font-size: 12px Microsoft YaHei;
-    }
-</style>
 <script src="echarts.min.js"></script>
 <script type="text/javascript">
     function sendGetHttpRequest(url,okcallback,failcallback) {
@@ -72,26 +36,33 @@
         var parent = json["data"]["genesis"];
         var data = {};
         data["name"] = parent["nodeinfo"]["name"];
-        if(0 < parent["nextnode"].lenght) {
+        data["value"] = parent["nodeinfo"]["name"];
+        if(0 < parent["nextnode"].length) {
             data["children"] = [];
             for(var j = 0; j < parent["nextnode"].length; ++j) {
-                var child = children(parent["nexrnode"][j]["hash"],json)
-                data["children"].push(child);
+                var child = children(parent["nextnode"][j]["hash"],json);
+                child["value"] = parent["nextnode"][j]["name"];
+                if(null != child) {
+                    data["children"].push(child);
+                }
             }
         }else {
             data["value"] = parent["nodeinfo"]["name"];
         }
         
-
         var width = window.screen.availWidth - 50;
         var height = window.screen.availHeight - 150;
         var main = document.getElementById('main');
         main.style.cssText = "height:" + height + "px;width:" + width + "px;background: white;";
         var myChart = echarts.init(document.getElementById('main'));
         myChart.setOption(option = {
+            title: {
+                text: "Tsstream Monitor",
+            },
             tooltip: {
                 trigger: 'item',
-                triggerOn: 'mousemove'
+                triggerOn: 'mousemove',
+                formatter: "{b}: {c}"
             },
             series: [{
                 type: 'tree',
@@ -130,10 +101,10 @@
                                 y: 0.5,
                                 r: 0.5,
                                 colorStops: [{
-                                    offset: 0,
+                                    offset: 1,
                                     color: 'red' // 0% 处的颜色
                                 }, {
-                                    offset: 1,
+                                    offset: 2,
                                     color: 'blue' // 100% 处的颜色
                                 }],
                                 globalCoord: false // 缺省为 false
@@ -148,8 +119,12 @@
     function children(hash,json){
         var data = {};
         var parent = json["data"][hash];
+        if(null == parent) {
+            return null;
+        }
+
         data["name"] = parent["nodeinfo"]["name"];
-        if(0 == parent["nextnode"].lenght){
+        if(0 == parent["nextnode"].length){
             data["value"] = parent["nodeinfo"]["name"];
             
             return;
@@ -159,7 +134,8 @@
         for(var j = 0; j < parent["nextnode"].length; ++j) {
             var child = {
                 "name": parent["nextnode"][j]["name"],
-                symbolSize: 16,
+                symbolSize: 32,
+                symbol: 'image://http://www.iconpng.com/png/ecommerce-business/iphone.png',
                 label: {
                     fontSize: 16,
                     color: "#000" //字体颜色
@@ -213,8 +189,14 @@
                 }
             };
 
-            child["children"] = children(parent["nextnode"][j]["hash"]);
+            var temp = children(parent["nextnode"][j]["hash"],json);
+            child["value"] = parent["nextnode"][j]["name"];
+            if(null != temp) {
+                child["children"] = temp;
+            }
+
             data["children"].push(child);
+            console.log(child);
         }
 
         return data;
@@ -228,7 +210,7 @@
     // setInterval(OnInterval,60 * 1000);
 </script>
 
-<body style="background:#666;align-content: center;">
+<body style="background:rgb(0, 12, 12);align-content: center;">
     <center>
         <div id="main" style="width: 600px;height:400px;background: white;"></div>
     </center>

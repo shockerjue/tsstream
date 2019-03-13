@@ -4,7 +4,7 @@ package customserver
 * 数据分发器
 */
 var WebSocketDataChan chan []byte
-
+var ClientConnects int
 const (
 	ClientChanSize = 32
 	WebSocketDataSize = 32
@@ -13,5 +13,6 @@ const (
 )
 
 func init() {
+	ClientConnects = 0
 	WebSocketDataChan = make(chan []byte,WebSocketDataSize)
 }

@@ -7,6 +7,7 @@ import (
 	"errors"
 	"strings"
 	"tsstream/config"
+	"tsstream/monitor"
 	"tsstream/customserver"
 )
 
@@ -145,6 +146,8 @@ func (this* Dispatch)dispatchUdp(data []byte) (err error) {
 		conn.Write(data)
 	} 
 
+	monitor.UploadMonitor(1,len(this.udp))
+
 	return
 }
 
@@ -170,6 +173,8 @@ func (this* Dispatch)dispatchTcp(data []byte) (err error) {
 		conn.Write(data)
 	}
 
+	monitor.UploadMonitor(1,len(this.tcp))
+
 	return 
 }
 
@@ -191,6 +196,7 @@ func (this* Dispatch)dispatchWebsocket(data []byte) (err error) {
 	
 
 	customserver.WebSocketDataChan <- data
+	monitor.UploadMonitor(len(customserver.WebSocketDataChan),customserver.ClientConnects)
 
 	return 
 }

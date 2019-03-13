@@ -4,6 +4,7 @@ import (
 	"time"
 	"tsstream/config"
 	"tsstream/stream"
+	"tsstream/monitor"
 	"tsstream/customserver"
 	log "github.com/sirupsen/logrus"
 )
@@ -72,4 +73,9 @@ func RunExtra() {
 	time.Sleep(3 * time.Second)
 
 	go stream.RunPushServer()
+}
+
+func RunMonitor() {
+	monitor := monitor.GetMonitorServer()
+	go monitor.RunServer()
 }

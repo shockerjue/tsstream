@@ -27,16 +27,17 @@ func main() {
 	}
 
 	if "monitor" == config.AppConf.RunMode {
-		monitor := monitor.GetMonitorServer()
-		monitor.RunServer()
+		isRun = true
+		controller.RunMonitor()
 	}
 
+	go monitor.RunMonitorTimer()
 	if isRun {
 		chSig := make(chan os.Signal)
 		signal.Notify(chSig, syscall.SIGINT, syscall.SIGTERM)
 		<-chSig
 	} else {
-		log.Error("Didn't support run style,must is (normal or extra)")
+		log.Error("Didn't support run style,must is (normal or extra or monitor)")
 	}
 
 	return 

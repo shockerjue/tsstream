@@ -123,12 +123,15 @@ func (h *WebSocketServer) RunServer() {
 		select {
 		case client := <-h.register:
 			h.clients[client] = true
+			ClientConnects = ClientConnects + 1
 
 		case client := <-h.unregister:
 			if _,ok := h.clients[client]; ok {
 				delete(h.clients,client)
 				close(client.send)
 				log.Error("Client chan close!")
+
+				ClientConnects = ClientConnects - 1
 			}
 
 		case message := <- WebSocketDataChan:

@@ -15,7 +15,7 @@ func EncodePasswd(str string) string {
 
 type Node struct {
 	Name 		string 	`json:"name,omitempty"`		
-	Connects	int32 	`json:"connects,omitempty"`
+	Connects	int 	`json:"connects,omitempty"`
 	Bind 		string 	`json:"bind,omitempty"`
 	Port 		string 	`json:"port,omitempty"`
 	Hash 		string 	`json:"hash,omitempty"`
@@ -23,7 +23,7 @@ type Node struct {
 
 type MonitorInfo struct {
 	NodeInfo 	Node 		`json:"nodeinfo,omitempty"`
-	Packages 	int32 		`json:"packages,omitempty"`
+	Packages 	int 		`json:"packages,omitempty"`
 	NextNode	[]Node 		`json:"nextnode,omitempty"`
 	Genesis		bool 		`json:"genesis,omitempty"`	
 }

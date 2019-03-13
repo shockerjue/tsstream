@@ -27,6 +27,7 @@ var (
 */
 type AppConfig struct {
 	RunMode	string
+	Monitor string
 }
 
 /**

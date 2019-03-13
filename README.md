@@ -73,3 +73,8 @@ exit
     server      这个目录包含的是框架的部署方式以及部署程序
 ```
 具体的使用说明可以查看demo目录下的说明文件。
+
+
+### 节点监控
+很多时候，我们需要知道对应的节点是否是活动的。
+![节点监控](https://github.com/shockerjue/tsstream/blob/master/img/monitor.png)

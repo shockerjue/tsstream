@@ -7,6 +7,8 @@ import (
 	"encoding/hex"
 )
 
+var NodeInfos map[string]MonitorInfo = make(map[string]MonitorInfo)
+
 func EncodePasswd(str string) string {
 	t := md5.New()
 	io.WriteString(t, str)
@@ -59,5 +61,3 @@ func (this *MonitorInfo)Hash()  {
 
 	return 
 }
-
-var NodeInfos map[string]MonitorInfo = make(map[string]MonitorInfo)

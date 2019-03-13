@@ -14,18 +14,18 @@ func EncodePasswd(str string) string {
 }
 
 type Node struct {
-	Name 		string 	`json:"name,omitempty"`		
-	Connects	int 	`json:"connects,omitempty"`
-	Bind 		string 	`json:"bind,omitempty"`
-	Port 		string 	`json:"port,omitempty"`
-	Hash 		string 	`json:"hash,omitempty"`
+	Name 		string 	`json:"name"`		
+	Connects	int 	`json:"connects"`
+	Bind 		string 	`json:"bind"`
+	Port 		string 	`json:"port"`
+	Hash 		string 	`json:"hash"`
 }
 
 type MonitorInfo struct {
 	NodeInfo 	Node 		`json:"nodeinfo,omitempty"`
-	Packages 	int 		`json:"packages,omitempty"`
+	Packages 	int 		`json:"packages"`
 	NextNode	[]Node 		`json:"nextnode,omitempty"`
-	Genesis		bool 		`json:"genesis,omitempty"`	
+	Genesis		bool 		`json:"genesis"`	
 }
 
 func (this *MonitorInfo)Encode() (string,error) {

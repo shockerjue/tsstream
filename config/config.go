@@ -24,6 +24,9 @@ var (
 * extra
 * 	主要是作为扩展服务启动，这种方式主要是接收来自normal启动的服务推送过来的数据
 * 	根据分发器将数据分发出去，分发到其他节点(TCP/UDP)或者是客户服务(WEBSOCKET/TCP)
+*
+* monitor
+*	主要用来采集各个节点的信息，以便监控各节点状态
 */
 type AppConfig struct {
 	RunMode	string
@@ -55,6 +58,9 @@ type PushStreamConfig struct {
 	Port 			string	//	绑定的端口
 }
 
+/**
+* 监控采集节点数据的配置信息
+*/
 type MonitorConfig struct {
 	Bind 			string 
 	Port 			string 

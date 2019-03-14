@@ -77,4 +77,4 @@ exit
 
 ### 节点监控
 很多时候，我们需要知道对应的节点是否是活动的。
-![节点监控](https://github.com/shockerjue/tsstream/blob/master/img/monitor.jpg)
+![节点监控](https://github.com/shockerjue/tsstream/blob/master/img/monitor.png)

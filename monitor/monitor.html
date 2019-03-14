@@ -33,24 +33,26 @@
         var body = document.body;
         body.removeChild(body.firstChild);
 
-        var parent = json["data"]["genesis"];
         var data = {};
+        var parent = json["data"]["genesis"];
         data["name"] = parent["nodeinfo"]["name"];
-        data["value"] = parent["nodeinfo"]["name"];
+        data["bind"] = parent["nodeinfo"]["bind"];
+        data["port"] = parent["nodeinfo"]["port"];
+        data["connects"] = parent["nodeinfo"]["connects"];
+        data["hash"] = parent["nodeinfo"]["hash"];
+        data["value"] = data["bind"] + ":" + data["port"];
         if(0 < parent["nextnode"].length) {
             data["children"] = [];
             for(var j = 0; j < parent["nextnode"].length; ++j) {
-                var child = children(parent["nextnode"][j]["hash"],json);
-                child["value"] = parent["nextnode"][j]["name"];
+                var child = children(parent["nextnode"][j]["hash"],json,data["children"]);
                 if(null != child) {
-                    data["children"].push(child);
+                    data["children"] = child;
                 }
             }
-        }else {
-            data["value"] = parent["nodeinfo"]["name"];
         }
         
-        var width = window.screen.availWidth - 50;
+        console.log(data);
+        var width = window.screen.availWidth - 100;
         var height = window.screen.availHeight - 150;
         var main = document.getElementById('main');
         main.style.cssText = "height:" + height + "px;width:" + width + "px;background: white;";
@@ -62,7 +64,15 @@
             tooltip: {
                 trigger: 'item',
                 triggerOn: 'mousemove',
-                formatter: "{b}: {c}"
+                // formatter: "{b}: {c}"
+                formatter: function (datas) { 
+                    var res = "name: " + datas["data"]["name"] + '<br/>';
+                    res = res + "bind: " + datas["data"]["bind"] + '<br/>';
+                    res = res + "port: " + datas["data"]["port"] + '<br/>';
+                    res = res + "connects: " + datas["data"]["connects"] + '<br/>';
+
+                    return res; 
+                }
             },
             series: [{
                 type: 'tree',
@@ -74,7 +84,7 @@
                 bottom: '1%',
                 right: '20%',
 
-                symbolSize: 10,
+                symbolSize: 28,
 
                 label: {
                     normal: {
@@ -101,10 +111,10 @@
                                 y: 0.5,
                                 r: 0.5,
                                 colorStops: [{
-                                    offset: 1,
+                                    offset: 0,
                                     color: 'red' // 0% 处的颜色
                                 }, {
-                                    offset: 2,
+                                    offset: 1,
                                     color: 'blue' // 100% 处的颜色
                                 }],
                                 globalCoord: false // 缺省为 false
@@ -116,7 +126,7 @@
         });
     }
 
-    function children(hash,json){
+    function children(hash,json,genesis){
         var data = {};
         var parent = json["data"][hash];
         if(null == parent) {
@@ -124,10 +134,13 @@
         }
 
         data["name"] = parent["nodeinfo"]["name"];
+        data["bind"] = parent["nodeinfo"]["bind"];
+        data["port"] = parent["nodeinfo"]["port"];
+        data["connects"] = parent["nodeinfo"]["connects"];
+        data["hash"] = parent["nodeinfo"]["hash"];
+        data["value"] = data["bind"] + ":" + data["port"];
         if(0 == parent["nextnode"].length){
-            data["value"] = parent["nodeinfo"]["name"];
-            
-            return;
+            return null;
         }
 
         data["children"] = [];
@@ -135,14 +148,13 @@
             var child = {
                 "name": parent["nextnode"][j]["name"],
                 symbolSize: 32,
-                symbol: 'image://http://www.iconpng.com/png/ecommerce-business/iphone.png',
                 label: {
                     fontSize: 16,
                     color: "#000" //字体颜色
                 },
                 itemStyle: {
-                    color: "#ff0000", //这是节点折叠时候的颜色
-                    borderColor: '#0000ff',
+                    color: "#00ff00", //这是节点折叠时候的颜色
+                    borderColor: '#ff0000',
                     borderWidth: 3,
                     normal: {
                         show: false,
@@ -161,7 +173,7 @@
                             globalCoord: false // 缺省为 false
                         },
                         borderColor: 'blue',
-                        borderWidth: 2,
+                        borderWidth: 1,
                         shadowColor: 'rgba(0, 0, 0, 1)',
                         shadowBlur: 10
                     },
@@ -189,17 +201,31 @@
                 }
             };
 
-            var temp = children(parent["nextnode"][j]["hash"],json);
-            child["value"] = parent["nextnode"][j]["name"];
+            child["children"] = [];
+            var temp = children(parent["nextnode"][j]["hash"],json,child["children"]);
+            child["bind"] = parent["nextnode"][j]["bind"];
+            child["port"] = parent["nextnode"][j]["port"];
+            child["connects"] = parent["nodeinfo"]["connects"];
+            child["hash"] = parent["nodeinfo"]["hash"];
+            child["value"] = child["bind"] + ":" + child["port"];
             if(null != temp) {
                 child["children"] = temp;
+            }else {
+                child = {};
+                child["name"] = parent["nextnode"][j]["name"];
+                child["bind"] = parent["nextnode"][j]["bind"];
+                child["port"] = parent["nextnode"][j]["port"];
+                child["connects"] = parent["nodeinfo"]["connects"];
+                child["hash"] = parent["nodeinfo"]["hash"];
+                child["value"] = child["bind"] + ":" + child["port"];
             }
 
             data["children"].push(child);
-            console.log(child);
         }
 
-        return data;
+        genesis.push(data);
+
+        return genesis;
     }
 
     function OnInterval() {

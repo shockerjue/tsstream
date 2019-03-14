@@ -12,6 +12,7 @@ var NodeInfos map[string]MonitorInfo = make(map[string]MonitorInfo)
 func EncodePasswd(str string) string {
 	t := md5.New()
 	io.WriteString(t, str)
+	
 	return hex.EncodeToString(t.Sum(nil))
 }
 

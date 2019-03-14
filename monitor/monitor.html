@@ -51,7 +51,6 @@
             }
         }
         
-        console.log(data);
         var width = window.screen.availWidth - 100;
         var height = window.screen.availHeight - 150;
         var main = document.getElementById('main');
@@ -64,7 +63,6 @@
             tooltip: {
                 trigger: 'item',
                 triggerOn: 'mousemove',
-                // formatter: "{b}: {c}"
                 formatter: function (datas) { 
                     var res = "name: " + datas["data"]["name"] + '<br/>';
                     res = res + "bind: " + datas["data"]["bind"] + '<br/>';

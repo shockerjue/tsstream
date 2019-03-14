@@ -33,6 +33,7 @@ install:
 	cp bin/a.out demo/server/extra1/bin/extra1
 	cp bin/a.out demo/server/extra2/bin/extra2
 	cp bin/a.out demo/monitor/bin/monitor
+	cp monitor/monitor.html demo/monitor/
 
 	cp -rf demo/server /opt/
 	cp -rf demo/client /opt/

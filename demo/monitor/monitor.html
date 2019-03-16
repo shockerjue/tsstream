@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Tsstream Monitor</title>
+    </head>
+<script src="echarts.min.js"></script>
+<script type="text/javascript">
+    function sendGetHttpRequest(url,okcallback,failcallback) {
+        var http = new XMLHttpRequest();
+        http.open("GET",url,true);
+        http.onreadystatechange = function() {
+            if(http.readyState == 4) {
+                if(http.status == 200) {
+                    try {
+                        var json = eval("(" + http.responseText + ")");
+                        if(null != okcallback) {
+                            okcallback(json);
+                        }
+                    }catch(err) {
+                        alert(err);
+                    }
+                }else {
+                    alert(http.responseText);
+                }
+            }
+        }
+
+        http.send();
+    }
+
+    function OnRequestCallback(json) {
+        var body = document.body;
+        body.removeChild(body.firstChild);
+
+        var data = {};
+        var parent = json["data"]["genesis"];
+        data["name"] = parent["nodeinfo"]["name"];
+        data["bind"] = parent["nodeinfo"]["bind"];
+        data["port"] = parent["nodeinfo"]["port"];
+        data["connects"] = parent["nodeinfo"]["connects"];
+        data["hash"] = parent["nodeinfo"]["hash"];
+        data["value"] = data["bind"] + ":" + data["port"];
+        if(0 < parent["nextnode"].length) {
+            data["children"] = [];
+            for(var j = 0; j < parent["nextnode"].length; ++j) {
+                var child = children(parent["nextnode"][j]["hash"],json,data["children"]);
+                if(null != child) {
+                    data["children"] = child;
+                }
+            }
+        }
+        
+        var width = window.screen.availWidth - 100;
+        var height = window.screen.availHeight - 150;
+        var main = document.getElementById('main');
+        main.style.cssText = "height:" + height + "px;width:" + width + "px;background: white;";
+        var myChart = echarts.init(document.getElementById('main'));
+        myChart.setOption(option = {
+            title: {
+                text: "Tsstream Monitor",
+            },
+            tooltip: {
+                trigger: 'item',
+                triggerOn: 'mousemove',
+                formatter: function (datas) { 
+                    var res = "name: " + datas["data"]["name"] + '<br/>';
+                    res = res + "bind: " + datas["data"]["bind"] + '<br/>';
+                    res = res + "port: " + datas["data"]["port"] + '<br/>';
+                    res = res + "connects: " + datas["data"]["connects"] + '<br/>';
+
+                    return res; 
+                }
+            },
+            series: [{
+                type: 'tree',
+                initialTreeDepth: -1,
+                data: [data],
+
+                top: '1%',
+                left: '7%',
+                bottom: '1%',
+                right: '20%',
+
+                symbolSize: 28,
+
+                label: {
+                    normal: {
+                        position: 'left',
+                        verticalAlign: 'middle',
+                        align: 'right',
+                        color: 'black'
+                    }
+                },
+
+                leaves: {
+                    label: {
+                        normal: {
+                            position: 'right',
+                            verticalAlign: 'middle',
+                            align: 'left',
+                        }
+                    },
+                    itemStyle: {
+                        normal: {
+                            color: {
+                                type: 'radial',
+                                x: 0.5,
+                                y: 0.5,
+                                r: 0.5,
+                                colorStops: [{
+                                    offset: 0,
+                                    color: 'red' // 0% 处的颜色
+                                }, {
+                                    offset: 1,
+                                    color: 'blue' // 100% 处的颜色
+                                }],
+                                globalCoord: false // 缺省为 false
+                            }
+                        }
+                    },
+                },
+            }]
+        });
+    }
+
+    function children(hash,json,genesis){
+        var data = {};
+        var parent = json["data"][hash];
+        if(null == parent) {
+            return null;
+        }
+
+        data["name"] = parent["nodeinfo"]["name"];
+        data["bind"] = parent["nodeinfo"]["bind"];
+        data["port"] = parent["nodeinfo"]["port"];
+        data["connects"] = parent["nodeinfo"]["connects"];
+        data["hash"] = parent["nodeinfo"]["hash"];
+        data["value"] = data["bind"] + ":" + data["port"];
+        if(0 == parent["nextnode"].length){
+            return null;
+        }
+
+        data["children"] = [];
+        for(var j = 0; j < parent["nextnode"].length; ++j) {
+            var child = {
+                "name": parent["nextnode"][j]["name"],
+                symbolSize: 32,
+                label: {
+                    fontSize: 16,
+                    color: "#000" //字体颜色
+                },
+                itemStyle: {
+                    color: "#00ff00", //这是节点折叠时候的颜色
+                    borderColor: '#ff0000',
+                    borderWidth: 3,
+                    normal: {
+                        show: false,
+                        color: {
+                            type: 'radial',
+                            x: 0.5,
+                            y: 0.5,
+                            r: 0.5,
+                            colorStops: [{
+                                offset: 0,
+                                color: 'green' // 0% 处的颜色
+                            }, {
+                                offset: 1,
+                                color: 'white' // 100% 处的颜色
+                            }],
+                            globalCoord: false // 缺省为 false
+                        },
+                        borderColor: 'blue',
+                        borderWidth: 1,
+                        shadowColor: 'rgba(0, 0, 0, 1)',
+                        shadowBlur: 10
+                    },
+                    emphasis: {
+                        color: {
+                            type: 'radial',
+                            x: 0.5,
+                            y: 0.5,
+                            r: 0.5,
+                            colorStops: [{
+                                offset: 0,
+                                color: 'green' // 0% 处的颜色
+                            }, {
+                                offset: 1,
+                                color: 'white' // 100% 处的颜色
+                            }],
+                            globalCoord: false // 缺省为 false
+                        }
+                    }
+                },
+                lineStyle: {
+                    color: "#888",
+                    width: 4,
+                    type: 'solid' //'dotted'虚线 'solid'实线
+                }
+            };
+
+            child["children"] = [];
+            var temp = children(parent["nextnode"][j]["hash"],json,child["children"]);
+            child["bind"] = parent["nextnode"][j]["bind"];
+            child["port"] = parent["nextnode"][j]["port"];
+            child["connects"] = parent["nodeinfo"]["connects"];
+            child["hash"] = parent["nodeinfo"]["hash"];
+            child["value"] = child["bind"] + ":" + child["port"];
+            if(null != temp) {
+                child["children"] = temp;
+            }else {
+                child = {};
+                child["name"] = parent["nextnode"][j]["name"];
+                child["bind"] = parent["nextnode"][j]["bind"];
+                child["port"] = parent["nextnode"][j]["port"];
+                child["connects"] = parent["nodeinfo"]["connects"];
+                child["hash"] = parent["nodeinfo"]["hash"];
+                child["value"] = child["bind"] + ":" + child["port"];
+            }
+
+            data["children"].push(child);
+        }
+
+        genesis.push(data);
+
+        return genesis;
+    }
+
+    function OnInterval() {
+        sendGetHttpRequest("http://api.monitor.0letter.com/monitor",OnRequestCallback,null);
+    }
+
+    OnInterval();
+    // setInterval(OnInterval,60 * 1000);
+</script>
+
+<body style="background:rgb(0, 12, 12);align-content: center;">
+    <center>
+        <div id="main" style="width: 600px;height:400px;background: white;"></div>
+    </center>
+</body>
+</html>

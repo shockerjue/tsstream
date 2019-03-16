@@ -230,3 +230,6 @@ server {
 -f mpegts -codec:v mpeg1video -s 640x360 -b:v 450k -bufsize 1300k -bufsize 2800k -maxrate 1500k -bf 0 -r 20 -muxdelay 0.001  tcp://x.x.x.x:50001
 ```
 主要修改上面信息中的tcp://x.x.x.x，可以修改为http地址或者是udp地址,配置的信息就是normal配置的接收流的地址信息.
+
+## 节点监控
+用于监控节点是否在正常运行。

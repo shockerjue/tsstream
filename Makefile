@@ -43,7 +43,8 @@ install:
 uninstall:
 	rm demo/server/normal/bin/normal
 	rm demo/server/extra1/bin/extra1
-	rm bin/a.out demo/server/extra2/bin/extra2
+	rm demo/server/extra2/bin/extra2
+	rm demo/monitor/bin/monitor
 
 clean:
 	rm -rf bin

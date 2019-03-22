@@ -26,13 +26,26 @@
 ![架构图](https://github.com/shockerjue/tsstream/blob/master/img/bushu5.png)
 主要是将ffmpeg捕获的数据通过服务器进行无限的扩展，这种方式如果对实时性要求不是很高的话，可以无限进行扩张，直到扩张到网络边界。当然最后始终是要将流分发到与服务连接的客户应中进行渲染。
 
-### 将部署的对应端口打开
+### 源码目录
 ```
-sudo iptables -I INPUT -p tcp --dport 50001 -j ACCEPT &&
-sudo iptables -I INPUT -p udp --dport 50001 -j ACCEPT &&
-sudo iptables -I INPUT -p tcp --dport 50002 -j ACCEPT &&
-sudo iptables -I INPUT -p tcp --dport 8088 -j ACCEPT &&
-sudo iptables -I INPUT -p tcp --dport 55002 -j ACCEPT 
+--tsstream
+    -- bin              编译后的目录
+    -- conf             配置文件目录
+    -- config           配置解析
+    -- controller       框架控制器，里面定义了启动不同服务的调用函数
+    -- customserver     自定义服务，主要是针对客户应用的，包括TCP服务和WEBSOCKET服务    
+    -- demo             示例目录，里面包含了客户端、框架、节点监控
+    -- dispatch         分发起，主要是将收到的数据通过分发起分发出去,主要是通过TCP、UDP、CUSTOM协议进行分发，分发到其他节点或者是自定义服务中。
+    -- img              一些框架图目录
+    -- monitor          节点检查目录，主要是用于监控各个部署节点的情况，同时也对外提供接口，以便能查看节点的动态信息
+    -- router           路由目录，暂时没有用到
+    -- stream           框架接收流的服务目录，包含TCP、UDP、HTTP接收服务的定义
+```
+
+### 将部署的对应端口打开
+这里主要是将部署的部分端口打开，以方便被访问。
+```
+sudo iptables -I INPUT -p tcp --dport 50001 -j ACCEPT 
 ```
 
 
